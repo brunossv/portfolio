@@ -9,6 +9,7 @@
 import Foundation
 
 class ViewPrincipalViewModel {
+    
     private let api = ViewPrincipalAPI()
     var model: ViewPrincipalModel?
     

@@ -17,5 +17,4 @@ class OptionsViewTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
 }

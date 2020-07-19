@@ -42,9 +42,7 @@ class ViewPrincipalViewController: UIViewController {
     }
     
     func configureViewController() {
-//        self.title = "Title"
-//        self.navigationController?.navigationBar.prefersLargeTitles = true
-//        self.navigationController?.navigationItem.largeTitleDisplayMode = .never
+        self.title = "Portfólio"
         self.tableView.backgroundColor = UIColor.systemGroupedBackground
         for cell in ReusableIdentifier.allCases {
             self.tableView.register(cell.type, forCellReuseIdentifier: cell.rawValue)
@@ -52,7 +50,6 @@ class ViewPrincipalViewController: UIViewController {
     }
     
     func configureTableView() {
-//        self.view.backgroundColor = .white
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
@@ -61,6 +58,26 @@ class ViewPrincipalViewController: UIViewController {
 
 extension ViewPrincipalViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 0 && indexPath.row == 1 {
+            let viewController = LearnMoreViewController()
+            viewController.html = self.viewModel.model?.learnMore?.html
+            self.navigationController?.pushViewController(viewController, animated: true)
+            
+        } else if indexPath.section == 1 {
+            switch self.viewModel.model?.features?[indexPath.row].type {
+            case .jogoMemoria:
+                break
+            case .messages:
+                break
+            case .caller:
+                break
+            default:
+                break
+            }
+        }
+    }
 }
 
 extension ViewPrincipalViewController: UITableViewDataSource {
@@ -70,7 +87,7 @@ extension ViewPrincipalViewController: UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -81,7 +98,7 @@ extension ViewPrincipalViewController: UITableViewDataSource {
         if section == 0 {
             return 2
         } else {
-            return self.viewModel.model?.features?.count ?? 0
+            return (self.viewModel.model?.features?.count ?? 0)
         }
     }
     
@@ -97,6 +114,13 @@ extension ViewPrincipalViewController: UITableViewDataSource {
             } else if indexPath.row == 1 {
                 cell.accessoryType = .disclosureIndicator
                 cell.textLabel?.text = self.viewModel.model?.learnMore?.title
+            }
+        } else {
+            let row = indexPath.row
+            if let features = self.viewModel.model?.features, row < features.count {
+                cell.textLabel?.text = features[row].title
+                cell.isSelected = features[row].available ?? true
+                cell.accessoryType = .disclosureIndicator
             }
         }
         
