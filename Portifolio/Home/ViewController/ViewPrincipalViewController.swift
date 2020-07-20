@@ -68,11 +68,16 @@ extension ViewPrincipalViewController: UITableViewDelegate {
         } else if indexPath.section == 1 {
             switch self.viewModel.model?.features?[indexPath.row].type {
             case .jogoMemoria:
-                break
+                let viewController = JogoDaMemoriaViewController()
+                self.navigationController?.pushViewController(viewController, animated: true)
             case .messages:
-                break
+                let blankViewController = UIViewController()
+                blankViewController.view.backgroundColor = .white
+                self.navigationController?.pushViewController(blankViewController, animated: true)
             case .caller:
-                break
+                let blankViewController = UIViewController()
+                blankViewController.view.backgroundColor = .white
+                self.navigationController?.pushViewController(blankViewController, animated: true)
             default:
                 break
             }
