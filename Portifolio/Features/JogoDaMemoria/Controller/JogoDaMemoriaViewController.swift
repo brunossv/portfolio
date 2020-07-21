@@ -32,8 +32,10 @@ class JogoDaMemoriaViewController: UIViewController {
     func startTheGame() {
         self.jogoContainer.subviews.forEach({ $0.removeFromSuperview() })
         self.generateMemoryViews()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        self.jogoContainer.isUserInteractionEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.cleanAllCards()
+            self.jogoContainer.isUserInteractionEnabled = true
         }
         
     }
