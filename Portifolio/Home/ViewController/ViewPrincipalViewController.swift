@@ -66,9 +66,11 @@ extension ViewPrincipalViewController: UITableViewDelegate {
             self.navigationController?.pushViewController(viewController, animated: true)
             
         } else if indexPath.section == 1 {
-            switch self.viewModel.model?.features?[indexPath.row].type {
+            let model = self.viewModel.model?.features?[indexPath.row].type
+            switch model {
             case .jogoMemoria:
                 let viewController = JogoDaMemoriaViewController()
+                viewController.title = self.viewModel.model?.features?[indexPath.row].title
                 self.navigationController?.pushViewController(viewController, animated: true)
             case .messages:
                 let blankViewController = UIViewController()
