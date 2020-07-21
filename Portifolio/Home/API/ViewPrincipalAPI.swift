@@ -11,9 +11,9 @@ import Foundation
 class ViewPrincipalAPI {
     
     struct Resource {
-        private static let url = "http://localhost:8080"
+        private static let url = "https://portfolio-brunovieira.herokuapp.com"
         
-        static let perfilAndFeatures = Resource.url + "/DataSource"
+        static let perfilAndFeatures = Resource.url + "/dataSource"
     }
     
     let api = Services()
