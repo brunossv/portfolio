@@ -33,25 +33,36 @@ class ViewPrincipalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel.getConfig { [weak self] (error) in
-            self?.tableView.reloadData()
-        }
         
         self.configureTableView()
         self.configureViewController()
+        self.startLoadConfig()
+    }
+    
+    @objc
+    func startLoadConfig() {
+        self.tableView.refreshControl?.beginRefreshing()
+        self.viewModel.getConfig { [weak self] (error) in
+            self?.tableView.reloadData()
+            self?.tableView.refreshControl?.endRefreshing()
+        }
     }
     
     func configureViewController() {
         self.title = "Portfólio"
         self.tableView.backgroundColor = UIColor.systemGroupedBackground
-        for cell in ReusableIdentifier.allCases {
-            self.tableView.register(cell.type, forCellReuseIdentifier: cell.rawValue)
-        }
     }
     
     func configureTableView() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        for cell in ReusableIdentifier.allCases {
+            self.tableView.register(cell.type, forCellReuseIdentifier: cell.rawValue)
+        }
+        
+        self.tableView.refreshControl = UIRefreshControl()
+        self.tableView.refreshControl?.addTarget(self, action: #selector(self.startLoadConfig), for: .valueChanged)
+        self.tableView.refreshControl?.attributedTitle = NSAttributedString(string: "Atualizando dados do Portfólio")
     }
     
 }
@@ -94,7 +105,7 @@ extension ViewPrincipalViewController: UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return self.viewModel.model?.sections ?? 0
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

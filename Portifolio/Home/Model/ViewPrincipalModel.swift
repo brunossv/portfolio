@@ -9,11 +9,13 @@
 import Foundation
 
 struct ViewPrincipalModel: Decodable {
+    var sections: Int?
     var perfil: Perfil?
     var features: [Features]?
     var learnMore: LearnMore?
     
     enum CodingKeys: String, CodingKey {
+        case sections
         case perfil
         case features
         case learnMore = "learn_more"
@@ -22,6 +24,7 @@ struct ViewPrincipalModel: Decodable {
     init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.sections = try values.decode(Int.self, forKey: .sections)
         self.learnMore = try values.decode(LearnMore.self, forKey: .learnMore)
         self.features = try values.decode([Features].self, forKey: .features)
         self.perfil = try values.decode(Perfil.self, forKey: .perfil)
