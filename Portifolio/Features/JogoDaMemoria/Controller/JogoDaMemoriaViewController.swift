@@ -27,6 +27,7 @@ class JogoDaMemoriaViewController: UIViewController {
         super.viewDidLoad()
         self.configureSubViews()
         self.startTheGame()
+        self.configureViewController()
     }
     
     func startTheGame() {
@@ -42,6 +43,19 @@ class JogoDaMemoriaViewController: UIViewController {
     
     func cleanAllCards() {
         self.jogoContainer.subviews.forEach({ ($0 as? UIButton)?.isSelected = false })
+    }
+    
+    func configureViewController() {
+        self.viewModel.updateViewCards = { [weak self] (card1, card2) in
+            self?.stopWhenHitTwice()
+            
+            self?.jogoContainer.isUserInteractionEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self?.jogoContainer.isUserInteractionEnabled = true
+                (self?.jogoContainer.viewWithTag(card1?.rawValue ?? 0) as? CardsView)?.isSelected = false
+                (self?.jogoContainer.viewWithTag(card2?.rawValue ?? 0) as? CardsView)?.isSelected = false
+            }
+        }
     }
     
     func generateMemoryViews() {
@@ -107,46 +121,22 @@ class JogoDaMemoriaViewController: UIViewController {
     }
     
     func stopWhenHitTwice() {
-        self.jogoContainer.isUserInteractionEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.updateCards()
-            self.jogoContainer.isUserInteractionEnabled = true
-        }
-    }
-    
-    func updateCards() {
-        
-        for (key, value) in self.viewModel.cardsSelected {
-            if value && self.viewModel.cardsSelected[key.reletedTo] ?? false {
-                (self.jogoContainer.viewWithTag(key.rawValue) as? CardsView)?.isSelected = value
-                (self.jogoContainer.viewWithTag(key.reletedTo.rawValue) as? CardsView)?.isSelected = value
-            } else {
-                (self.jogoContainer.viewWithTag(key.rawValue) as? CardsView)?.isSelected = false
-                (self.jogoContainer.viewWithTag(key.reletedTo.rawValue) as? CardsView)?.isSelected = false
-                self.viewModel.cardsSelected[key] = false
-                self.viewModel.cardsSelected[key.reletedTo] = false
-            }
-        }
+
     }
     
     @objc
     func cardDidTapped(_ sender: UIButton) {
         
-        
-        if let card = JogoDaMemoriaViewModel.Cards(rawValue: sender.tag) {
-            guard let value = self.viewModel.cardsSelected[card], !value else { return }
+        if let selectedCard = JogoDaMemoriaViewModel.Cards(rawValue: sender.tag) {
+            guard let value = self.viewModel.cardsRightAwnser[selectedCard], !value else { return }
             
-            self.viewModel.cardsSelected[card] = true
-            (self.jogoContainer.viewWithTag(sender.tag) as? CardsView)?.isSelected = true
+            if selectedCard == self.viewModel.cardsClicked.card1 {
+                return
+            } else {
+                (self.jogoContainer.viewWithTag(sender.tag) as? CardsView)?.isSelected = true
+                self.viewModel.selectACard(selectedCard)
+            }
         }
-        
-        if self.viewModel.cardsClicked.card1 {
-            self.viewModel.cardsClicked.card2 = true
-            self.stopWhenHitTwice()
-        } else {
-            self.viewModel.cardsClicked.card1 = true
-        }
-        
     }
     
     func configureSubViews() {

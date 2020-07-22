@@ -89,7 +89,9 @@ class JogoDaMemoriaViewModel {
         
     }
     
-    var cardsSelected: [Cards:Bool] = {
+    var updateViewCards: ((_ card1: Cards?,_ card2: Cards?) -> Void)?
+    
+    var cardsRightAwnser: [Cards:Bool] = {
         var array: [Cards:Bool] = [:]
         
         for card in Cards.allCases {
@@ -98,11 +100,29 @@ class JogoDaMemoriaViewModel {
         return array
     }()
     
-    var cardsClicked: (card1: Bool,card2: Bool) = (false, false) {
-        didSet(newValue) {
-            if cardsClicked.card1 && cardsClicked.card2 {
-                self.cardsClicked = (false, false)
-            }
+    var cardsClicked: (card1: Cards?, card2: Cards?) = (nil, nil)
+    
+    private func checkinBothCardsClicked() {
+        
+        defer {
+            self.cardsClicked = (nil, nil)
+        }
+        
+        if let card1 = self.cardsClicked.card1, let card2 = self.cardsClicked.card2, card1 == card2.reletedTo {
+            self.cardsRightAwnser[card1] = true
+            self.cardsRightAwnser[card2] = true
+        } else {
+            self.updateViewCards?(self.cardsClicked.card1, self.cardsClicked.card2)
+        }
+    }
+    
+    func selectACard(_ card: Cards) {
+
+        if let _ = self.cardsClicked.card1 {
+            self.cardsClicked.card2 = card
+            self.checkinBothCardsClicked()
+        } else {
+            self.cardsClicked.card1 = card
         }
     }
     
