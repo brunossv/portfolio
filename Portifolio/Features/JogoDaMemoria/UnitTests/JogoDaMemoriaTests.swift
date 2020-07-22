@@ -7,27 +7,77 @@
 //
 
 import XCTest
+@testable import Portifolio
 
 class JogoDaMemoriaTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    override func setUp() {
+        super.setUp()
+        
     }
+    
+    func testHitAwnser() {
+        let viewModel = JogoDaMemoriaViewModel()
+        viewModel.selectACard(.bear)
+        
+        XCTAssertEqual(viewModel.cardsClicked.card1, .bear)
+        
+        //A partir da segunda carta selecionada, o model já é atualizado com o valor true, respectivo do conjunto acertado
+        viewModel.selectACard(.equalBear)
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        let cardsTrue = viewModel.cardsRightAwnser.filter( { $0.value == true })
+        
+        XCTAssertEqual(cardsTrue.count, 2)
+        
+        XCTAssertEqual(viewModel.cardsClicked.card1, nil)
+        XCTAssertEqual(viewModel.cardsClicked.card2, nil)
+        
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testMissAwnser() {
+        let viewModel = JogoDaMemoriaViewModel()
+        viewModel.selectACard(.bear)
+        
+        XCTAssertEqual(viewModel.cardsClicked.card1, .bear)
+        
+        viewModel.selectACard(.chicken)
+        
+        //Quando selecionar a segunda carta, esta clousure é chamada, informando que as cartas selecionadas, devem esconder a figura reprentativa.
+        viewModel.updateViewCards = { (card1, card2) in
+            XCTAssertEqual(card1, .bear)
+            XCTAssertEqual(card2, .chicken)
         }
+
+        let cardsTrue = viewModel.cardsRightAwnser.filter( { $0.value == true })
+        
+        XCTAssertEqual(cardsTrue.count, 0)
+        
+        XCTAssertEqual(viewModel.cardsClicked.card1, nil)
+        XCTAssertEqual(viewModel.cardsClicked.card2, nil)
+    }
+    
+    func testAllTheCardsMatch() {
+        let viewModel = JogoDaMemoriaViewModel()
+        viewModel.selectACard(.bear)
+        viewModel.selectACard(.equalBear)
+        viewModel.selectACard(.chicken)
+        viewModel.selectACard(.equalChicken)
+        viewModel.selectACard(.cow)
+        viewModel.selectACard(.equalCow)
+        viewModel.selectACard(.kangaroo)
+        viewModel.selectACard(.equalKangaroo)
+        viewModel.selectACard(.bird)
+        viewModel.selectACard(.equalBird)
+        viewModel.selectACard(.dog)
+        viewModel.selectACard(.equalDog)
+        viewModel.selectACard(.elephant)
+        viewModel.selectACard(.equalElephant)
+        viewModel.selectACard(.frog)
+        viewModel.selectACard(.equalFrog)
+        
+        let cardsTrue = viewModel.cardsRightAwnser.filter( { $0.value == true })
+        
+        XCTAssertEqual(cardsTrue.count, JogoDaMemoriaViewModel.Cards.allCases.count)
     }
 
 }
