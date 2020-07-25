@@ -129,6 +129,8 @@ extension ViewPrincipalViewController: UITableViewDataSource {
                 (cell as? PerfilTableViewCell)?.position = self.viewModel.model?.perfil?.position
                 (cell as? PerfilTableViewCell)?.age = "\(self.viewModel.model?.perfil?.age ?? 0)"
                 (cell as? PerfilTableViewCell)?.descriptionInfo = self.viewModel.model?.perfil?.description
+                (cell as? PerfilTableViewCell)?.avatarLink = self.viewModel.model?.perfil?.avatar
+                
             } else if indexPath.row == 1 {
                 cell.accessoryType = .disclosureIndicator
                 cell.textLabel?.text = self.viewModel.model?.learnMore?.title

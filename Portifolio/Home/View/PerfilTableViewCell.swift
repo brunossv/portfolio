@@ -21,7 +21,10 @@ class PerfilTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 14
         view.layer.masksToBounds = true
-        view.backgroundColor = .black
+        view.backgroundColor = .white
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.darkGray.cgColor
+        view.contentMode = .scaleAspectFit
         
         return view
     }()
@@ -62,6 +65,14 @@ class PerfilTableViewCell: UITableViewCell {
     var descriptionInfo: String? {
         get { return self.descriptionLabel.text }
         set { self.descriptionLabel.text = newValue }
+    }
+    
+    var avatarLink: String? {
+        didSet {
+            Services().carregarImage(avatarLink ?? "") { (image, _) in
+                self.avatarView.image = image
+            }
+        }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

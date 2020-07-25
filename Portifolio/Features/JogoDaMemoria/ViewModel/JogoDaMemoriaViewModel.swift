@@ -86,10 +86,11 @@ class JogoDaMemoriaViewModel {
                 return .kangaroo
             }
         }
-        
     }
     
     var updateViewCards: ((_ card1: Cards?,_ card2: Cards?) -> Void)?
+    var updateViewCronometer: ((_ minute:Int,_ second: Int) -> Void)?
+    var playerDidWin: (() -> Void)?
     
     var cardsRightAwnser: [Cards:Bool] = {
         var array: [Cards:Bool] = [:]
@@ -116,14 +117,62 @@ class JogoDaMemoriaViewModel {
         }
     }
     
+    var timer: Timer?
+    var fireDate: Date?
+    var model: JogoDaMemoriaScoreModel = JogoDaMemoriaScoreModel()
+    var scoreModel: [JogoDaMemoriaScore]?
+    
+    func startTheGame() {
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimerCronometer(_:)), userInfo: nil, repeats: true)
+        self.fireDate = Date()
+        self.timer?.fire()
+    }
+    
+    func stopTheGame() {
+        self.timer?.invalidate()
+        Cards.allCases.forEach({ self.cardsRightAwnser[$0] = false })
+    }
+    
+    @objc
+    func updateTimerCronometer(_ timer: Timer) {
+        
+        if let fireDate = self.fireDate {
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.minute, .second], from: fireDate, to: timer.fireDate)
+            self.updateViewCronometer?(components.minute ?? 0, components.second ?? 0)
+        }
+    }
+    
+    func checkGameProgress() {
+        let numberOfRightAwnser = self.cardsRightAwnser.filter( { $0.value == true})
+        if numberOfRightAwnser.count == Cards.allCases.count {
+            self.playerDidWin?()
+            self.stopTheGame()
+        }
+    }
+    
     func selectACard(_ card: Cards) {
 
         if let _ = self.cardsClicked.card1 {
             self.cardsClicked.card2 = card
             self.checkinBothCardsClicked()
+            self.checkGameProgress()
         } else {
             self.cardsClicked.card1 = card
         }
+    }
+    
+    func saveNewScoreWithPlayer(name: String) {
+        if let fireDate = self.fireDate, let finalTimer = self.timer {
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.minute, .second], from: fireDate, to: finalTimer.fireDate)
+            self.model.saveNewScore(player: name, dateScore: self.fireDate, minute: components.minute, second: components.second)
+        }
+    }
+    
+    func fetchAllScores(_ completion: () -> Void) {
+        self.scoreModel = self.model.fetchAllScores()
+        completion()
     }
     
 }

@@ -28,6 +28,7 @@
 		6BEF68E324C5158F005D6BFB /* JogoDaMemoriaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68E224C5158F005D6BFB /* JogoDaMemoriaViewModel.swift */; };
 		6BEF68E524C66EE8005D6BFB /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68E424C66EE8005D6BFB /* CardsView.swift */; };
 		6BEF68E824C7B3BB005D6BFB /* JogoDaMemoriaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68E724C7B3BB005D6BFB /* JogoDaMemoriaTests.swift */; };
+		6BEF68EA24CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68E924CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		6BEF68E224C5158F005D6BFB /* JogoDaMemoriaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JogoDaMemoriaViewModel.swift; sourceTree = "<group>"; };
 		6BEF68E424C66EE8005D6BFB /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
 		6BEF68E724C7B3BB005D6BFB /* JogoDaMemoriaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JogoDaMemoriaTests.swift; sourceTree = "<group>"; };
+		6BEF68E924CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JogoDaMemoriaScoreModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,6 +285,7 @@
 		6BEF68DF24C4C082005D6BFB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6BEF68E924CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 				6BEF68D024C3AF9C005D6BFB /* ViewPrincipalViewModel.swift in Sources */,
 				6BEF689424C3A413005D6BFB /* Portifolio.xcdatamodeld in Sources */,
 				6BEF688F24C3A413005D6BFB /* AppDelegate.swift in Sources */,
+				6BEF68EA24CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift in Sources */,
 				6BEF68E324C5158F005D6BFB /* JogoDaMemoriaViewModel.swift in Sources */,
 				6BEF68D524C3BC02005D6BFB /* ViewFactorys.swift in Sources */,
 				6BEF68D924C3D69E005D6BFB /* LearnMoreViewController.swift in Sources */,

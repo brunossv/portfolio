@@ -21,24 +21,80 @@ class JogoDaMemoriaViewController: UIViewController {
         return view
     }()
     
+    lazy var conometroContainer: UILabel = {
+        let view = UILabel()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = #colorLiteral(red: 0.1803921569, green: 0.6784313725, blue: 0.9490196078, alpha: 1)
+        view.layer.cornerRadius = 16
+        view.layer.borderWidth = 1.5
+        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.masksToBounds = true
+        view.textColor = .white
+        view.textAlignment = .center
+        view.font = UIFont.systemFont(ofSize: 24, weight: .regular)
+        view.text = "0:0"
+        
+        return view
+    }()
+    
     var viewModel: JogoDaMemoriaViewModel = JogoDaMemoriaViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureSubViews()
-        self.startTheGame()
         self.configureViewController()
     }
     
     func startTheGame() {
-        self.jogoContainer.subviews.forEach({ $0.removeFromSuperview() })
+        self.createCronometreView()
         self.generateMemoryViews()
+        self.startTheGameAnimation()
+        self.viewModel.startTheGame()
         self.jogoContainer.isUserInteractionEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.cleanAllCards()
             self.jogoContainer.isUserInteractionEnabled = true
         }
+    }
+    
+    func stopTheGame() {
+        self.conometroContainer.text = "0:0"
+        self.viewModel.stopTheGame()
+        self.stopTheGameAnimation()
+    }
+    
+    func createCronometreView() {
+        self.view.addSubview(self.conometroContainer)
         
+        NSLayoutConstraint.activate([
+            self.conometroContainer.topAnchor.constraint(equalTo: self.jogoContainer.bottomAnchor, constant: 5),
+            self.conometroContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.conometroContainer.widthAnchor.constraint(equalToConstant: 135),
+            self.conometroContainer.heightAnchor.constraint(equalToConstant: 55)
+        ])
+    }
+    
+    func startTheGameAnimation() {
+        self.jogoContainer.alpha = 0.5
+        self.conometroContainer.alpha = 0.5
+        self.jogoContainer.transform.ty = -20
+        self.conometroContainer.transform.ty = -20
+        UIView.animateKeyframes(withDuration: 0.25, delay: 0, options: .calculationModeCubic, animations: {
+            self.jogoContainer.alpha = 1
+            self.conometroContainer.alpha = 1
+            self.jogoContainer.transform.ty = 0
+            self.conometroContainer.transform.ty = 0
+        }, completion: nil)
+    }
+    
+    func stopTheGameAnimation() {
+        
+        UIView.animateKeyframes(withDuration: 0.25, delay: 0, options: .calculationModeCubic, animations: {
+            self.jogoContainer.alpha = 0
+            self.conometroContainer.alpha = 0
+            self.jogoContainer.transform.ty = -20
+            self.conometroContainer.transform.ty = -20
+        }, completion: nil)
     }
     
     func cleanAllCards() {
@@ -46,8 +102,14 @@ class JogoDaMemoriaViewController: UIViewController {
     }
     
     func configureViewController() {
+        
+        let startButton = UIButton(type: .system)
+        startButton.setTitle("Start", for: .normal)
+        startButton.setTitle("Stop", for: .selected)
+        startButton.addTarget(self, action: #selector(self.startGameDidTapped(_:)), for: .touchUpInside)
+        self.navigationItem.setRightBarButton(UIBarButtonItem(customView: startButton), animated: true)
+        
         self.viewModel.updateViewCards = { [weak self] (card1, card2) in
-            self?.stopWhenHitTwice()
             
             self?.jogoContainer.isUserInteractionEnabled = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -56,9 +118,44 @@ class JogoDaMemoriaViewController: UIViewController {
                 (self?.jogoContainer.viewWithTag(card2?.rawValue ?? 0) as? CardsView)?.isSelected = false
             }
         }
+        
+        self.viewModel.updateViewCronometer = { [weak self] (hour, minute) in
+            self?.conometroContainer.text = "\(hour < 10 ? "0\(hour)" : "\(hour)"):\(minute < 10 ? "0\(minute)" : "\(minute)")"
+        }
+        
+        self.viewModel.playerDidWin = { [weak self] in
+            self?.stopTheGameAnimation()
+            self?.viewModel.saveNewScoreWithPlayer(name: "Bruno")
+            self?.updateScoreList()
+            (self?.navigationItem.rightBarButtonItem?.customView as? UIButton)?.isSelected = false
+        }
+        
+        self.updateScoreList()
+    }
+    
+    func updateScoreList() {
+        self.viewModel.fetchAllScores { [weak self] in
+            self?.viewModel.scoreModel?.forEach( { print($0.player, $0.minute, $0.second) })
+        }
+    }
+    
+    @objc
+    func startGameDidTapped(_ sender: UIButton) {
+        if sender.isSelected {
+            self.stopTheGame()
+        } else {
+            self.startTheGame()
+        }
+        sender.isSelected = !sender.isSelected
+    }
+    
+    func showViewCongratulations() {
+        
     }
     
     func generateMemoryViews() {
+        
+        self.jogoContainer.subviews.forEach({ $0.removeFromSuperview() })
         
         let cards: [JogoDaMemoriaViewModel.Cards] = JogoDaMemoriaViewModel.Cards.allCases.shuffled()
         
@@ -120,10 +217,6 @@ class JogoDaMemoriaViewController: UIViewController {
         
     }
     
-    func stopWhenHitTwice() {
-
-    }
-    
     @objc
     func cardDidTapped(_ sender: UIButton) {
         
@@ -143,7 +236,7 @@ class JogoDaMemoriaViewController: UIViewController {
         self.view.addSubview(self.jogoContainer)
         self.view.backgroundColor = .systemBackground
         NSLayoutConstraint.activate([
-            self.jogoContainer.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            self.jogoContainer.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor, constant: 20),
             self.jogoContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
     }
