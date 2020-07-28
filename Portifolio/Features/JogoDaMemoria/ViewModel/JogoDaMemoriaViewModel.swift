@@ -118,13 +118,12 @@ class JogoDaMemoriaViewModel {
     }
     
     var timer: Timer?
-    var fireDate: Date?
+    var timeCurrent: (initial: Date, final: Date)?
     var model: JogoDaMemoriaScoreModel = JogoDaMemoriaScoreModel()
-    var scoreModel: [JogoDaMemoriaScore]?
     
     func startTheGame() {
         self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimerCronometer(_:)), userInfo: nil, repeats: true)
-        self.fireDate = Date()
+        self.timeCurrent = (Date(), Date())
         self.timer?.fire()
     }
     
@@ -136,9 +135,10 @@ class JogoDaMemoriaViewModel {
     @objc
     func updateTimerCronometer(_ timer: Timer) {
         
-        if let fireDate = self.fireDate {
+        if let fireDate = self.timeCurrent?.initial {
             let calendar = Calendar.current
             let components = calendar.dateComponents([.minute, .second], from: fireDate, to: timer.fireDate)
+            self.timeCurrent?.final = timer.fireDate
             self.updateViewCronometer?(components.minute ?? 0, components.second ?? 0)
         }
     }
@@ -163,16 +163,15 @@ class JogoDaMemoriaViewModel {
     }
     
     func saveNewScoreWithPlayer(name: String) {
-        if let fireDate = self.fireDate, let finalTimer = self.timer {
+        if let initialDate = self.timeCurrent?.initial, let finalDate = self.timeCurrent?.final {
             let calendar = Calendar.current
-            let components = calendar.dateComponents([.minute, .second], from: fireDate, to: finalTimer.fireDate)
-            self.model.saveNewScore(player: name, dateScore: self.fireDate, minute: components.minute, second: components.second)
+            let components = calendar.dateComponents([.minute, .second], from: initialDate, to: finalDate)
+            self.model.saveNewScore(player: name, dateScore: finalDate, minute: components.minute, second: components.second)
         }
     }
     
-    func fetchAllScores(_ completion: () -> Void) {
-        self.scoreModel = self.model.fetchAllScores()
-        completion()
+    func fetchfirstThreePlacesScore() -> [JogoDaMemoriaScore] {
+        return self.model.fetchfirstThreePlacesScore()
     }
     
 }

@@ -23,8 +23,8 @@ class JogoDaMemoriaScoreModel {
         
         newScore?.date = dateScore
         newScore?.player = player
-        newScore?.minute = Int16(minute ?? 0)
-        newScore?.second = Int16(second ?? 0)
+        newScore?.minute = Int64(minute ?? 0)
+        newScore?.second = Int64(second ?? 0)
         
         try? self.context.save()
     }
@@ -33,7 +33,15 @@ class JogoDaMemoriaScoreModel {
         let fetchParam = NSFetchRequest<NSFetchRequestResult>(entityName: "JogoDaMemoriaScore")
         fetchParam.sortDescriptors = [NSSortDescriptor(key: "minute", ascending: true),
                                  NSSortDescriptor(key: "second", ascending: true)]
-        
+        fetchParam.fetchLimit = 10
+        return (try? self.context.fetch(fetchParam) as? [JogoDaMemoriaScore]) ?? []
+    }
+    
+    func fetchfirstThreePlacesScore() -> [JogoDaMemoriaScore] {
+        let fetchParam = NSFetchRequest<NSFetchRequestResult>(entityName: "JogoDaMemoriaScore")
+        fetchParam.sortDescriptors = [NSSortDescriptor(key: "minute", ascending: true),
+                                 NSSortDescriptor(key: "second", ascending: true)]
+        fetchParam.fetchLimit = 3
         return (try? self.context.fetch(fetchParam) as? [JogoDaMemoriaScore]) ?? []
     }
 }
