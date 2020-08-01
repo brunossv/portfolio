@@ -92,14 +92,7 @@ class JogoDaMemoriaViewModel {
     var updateViewCronometer: ((String) -> Void)?
     var playerDidWin: ((_ score: String?) -> Void)?
     
-    var cardsRightAwnser: [Cards:Bool] = {
-        var array: [Cards:Bool] = [:]
-        
-        for card in Cards.allCases {
-            array[card] = false
-        }
-        return array
-    }()
+    var cardsRightAwnser: [Cards:Bool] = [:]
     
     private var scoreFormat: ((_ minute: Int,_ second:Int) -> String) = { (minute, second) in
         return "\(minute < 10 ? "0\(minute)" : "\(minute)"):\(second < 10 ? "0\(second)" : "\(second)")"
@@ -126,6 +119,8 @@ class JogoDaMemoriaViewModel {
     var model: JogoDaMemoriaScoreModel = JogoDaMemoriaScoreModel()
     
     func startTheGame() {
+        Cards.allCases.forEach({ self.cardsRightAwnser[$0] = false })
+        
         self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimerCronometer(_:)), userInfo: nil, repeats: true)
         self.timeCurrent = (Date(), Date())
         self.timer?.fire()
@@ -133,7 +128,6 @@ class JogoDaMemoriaViewModel {
     
     func stopTheGame() {
         self.timer?.invalidate()
-        Cards.allCases.forEach({ self.cardsRightAwnser[$0] = false })
     }
     
     @objc
