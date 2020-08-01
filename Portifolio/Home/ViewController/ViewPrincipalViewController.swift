@@ -77,13 +77,20 @@ extension ViewPrincipalViewController: UITableViewDelegate {
             self.navigationController?.pushViewController(viewController, animated: true)
             
         } else if indexPath.section == 1 {
-            switch self.viewModel.model?.features?[indexPath.row].type {
+            let model = self.viewModel.model?.features?[indexPath.row].type
+            switch model {
             case .jogoMemoria:
-                break
+                let viewController = JogoDaMemoriaViewController()
+                viewController.title = self.viewModel.model?.features?[indexPath.row].title
+                self.navigationController?.pushViewController(viewController, animated: true)
             case .messages:
-                break
+                let blankViewController = UIViewController()
+                blankViewController.view.backgroundColor = .white
+                self.navigationController?.pushViewController(blankViewController, animated: true)
             case .caller:
-                break
+                let blankViewController = UIViewController()
+                blankViewController.view.backgroundColor = .white
+                self.navigationController?.pushViewController(blankViewController, animated: true)
             default:
                 break
             }
@@ -122,6 +129,8 @@ extension ViewPrincipalViewController: UITableViewDataSource {
                 (cell as? PerfilTableViewCell)?.position = self.viewModel.model?.perfil?.position
                 (cell as? PerfilTableViewCell)?.age = "\(self.viewModel.model?.perfil?.age ?? 0)"
                 (cell as? PerfilTableViewCell)?.descriptionInfo = self.viewModel.model?.perfil?.description
+                (cell as? PerfilTableViewCell)?.avatarLink = self.viewModel.model?.perfil?.avatar
+                
             } else if indexPath.row == 1 {
                 cell.accessoryType = .disclosureIndicator
                 cell.textLabel?.text = self.viewModel.model?.learnMore?.title

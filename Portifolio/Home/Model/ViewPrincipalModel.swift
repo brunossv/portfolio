@@ -66,7 +66,7 @@ struct ViewPrincipalModel: Decodable {
         }
         
         enum TypeFeature: Int {
-            case jogoMemoria = 0
+            case jogoMemoria = 1
             case messages
             case caller
         }

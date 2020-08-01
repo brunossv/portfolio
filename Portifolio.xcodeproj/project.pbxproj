@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B815CFB24CFC0AC00123A5A /* CongratulationsAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B815CFA24CFC0AC00123A5A /* CongratulationsAlertView.swift */; };
 		6BEF688F24C3A413005D6BFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF688E24C3A413005D6BFB /* AppDelegate.swift */; };
 		6BEF689124C3A413005D6BFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF689024C3A413005D6BFB /* SceneDelegate.swift */; };
 		6BEF689424C3A413005D6BFB /* Portifolio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF689224C3A413005D6BFB /* Portifolio.xcdatamodeld */; };
@@ -24,6 +25,11 @@
 		6BEF68D524C3BC02005D6BFB /* ViewFactorys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68D424C3BC02005D6BFB /* ViewFactorys.swift */; };
 		6BEF68D724C3D15A005D6BFB /* OptionsViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68D624C3D15A005D6BFB /* OptionsViewTableViewCell.swift */; };
 		6BEF68D924C3D69E005D6BFB /* LearnMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68D824C3D69E005D6BFB /* LearnMoreViewController.swift */; };
+		6BEF68E124C4C093005D6BFB /* JogoDaMemoriaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68E024C4C093005D6BFB /* JogoDaMemoriaViewController.swift */; };
+		6BEF68E324C5158F005D6BFB /* JogoDaMemoriaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68E224C5158F005D6BFB /* JogoDaMemoriaViewModel.swift */; };
+		6BEF68E824C7B3BB005D6BFB /* JogoDaMemoriaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68E724C7B3BB005D6BFB /* JogoDaMemoriaTests.swift */; };
+		6BEF68EA24CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68E924CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift */; };
+		6BEF68EC24CBE47D005D6BFB /* ScoreBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEF68EB24CBE47D005D6BFB /* ScoreBoardTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6B815CFA24CFC0AC00123A5A /* CongratulationsAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CongratulationsAlertView.swift; sourceTree = "<group>"; };
 		6BEF688B24C3A413005D6BFB /* Portifolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Portifolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BEF688E24C3A413005D6BFB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6BEF689024C3A413005D6BFB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +74,11 @@
 		6BEF68D424C3BC02005D6BFB /* ViewFactorys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactorys.swift; sourceTree = "<group>"; };
 		6BEF68D624C3D15A005D6BFB /* OptionsViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewTableViewCell.swift; sourceTree = "<group>"; };
 		6BEF68D824C3D69E005D6BFB /* LearnMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreViewController.swift; sourceTree = "<group>"; };
+		6BEF68E024C4C093005D6BFB /* JogoDaMemoriaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JogoDaMemoriaViewController.swift; sourceTree = "<group>"; };
+		6BEF68E224C5158F005D6BFB /* JogoDaMemoriaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JogoDaMemoriaViewModel.swift; sourceTree = "<group>"; };
+		6BEF68E724C7B3BB005D6BFB /* JogoDaMemoriaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JogoDaMemoriaTests.swift; sourceTree = "<group>"; };
+		6BEF68E924CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JogoDaMemoriaScoreModel.swift; sourceTree = "<group>"; };
+		6BEF68EB24CBE47D005D6BFB /* ScoreBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreBoardTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +129,9 @@
 		6BEF688D24C3A413005D6BFB /* Portifolio */ = {
 			isa = PBXGroup;
 			children = (
+				6BEF68DA24C4C052005D6BFB /* Features */,
 				6BEF68C424C3ADDB005D6BFB /* Factorys */,
+				6BEF68C524C3ADDF005D6BFB /* Home */,
 				6BEF68C124C3AD77005D6BFB /* Service */,
 				6BEF688E24C3A413005D6BFB /* AppDelegate.swift */,
 				6BEF689024C3A413005D6BFB /* SceneDelegate.swift */,
@@ -168,7 +182,6 @@
 			isa = PBXGroup;
 			children = (
 				6BEF68D424C3BC02005D6BFB /* ViewFactorys.swift */,
-				6BEF68C524C3ADDF005D6BFB /* Home */,
 			);
 			path = Factorys;
 			sourceTree = "<group>";
@@ -225,6 +238,67 @@
 				6BEF68CC24C3AE7F005D6BFB /* ViewPrincipalAPI.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		6BEF68DA24C4C052005D6BFB /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				6BEF68DB24C4C059005D6BFB /* JogoDaMemoria */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		6BEF68DB24C4C059005D6BFB /* JogoDaMemoria */ = {
+			isa = PBXGroup;
+			children = (
+				6BEF68E624C7B38C005D6BFB /* UnitTests */,
+				6BEF68DF24C4C082005D6BFB /* Model */,
+				6BEF68DE24C4C07C005D6BFB /* ViewModel */,
+				6BEF68DD24C4C076005D6BFB /* View */,
+				6BEF68DC24C4C071005D6BFB /* Controller */,
+			);
+			path = JogoDaMemoria;
+			sourceTree = "<group>";
+		};
+		6BEF68DC24C4C071005D6BFB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6BEF68E024C4C093005D6BFB /* JogoDaMemoriaViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6BEF68DD24C4C076005D6BFB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6B815CFA24CFC0AC00123A5A /* CongratulationsAlertView.swift */,
+				6BEF68EB24CBE47D005D6BFB /* ScoreBoardTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6BEF68DE24C4C07C005D6BFB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6BEF68E224C5158F005D6BFB /* JogoDaMemoriaViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6BEF68DF24C4C082005D6BFB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6BEF68E924CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6BEF68E624C7B38C005D6BFB /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				6BEF68E724C7B3BB005D6BFB /* JogoDaMemoriaTests.swift */,
+			);
+			path = UnitTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -360,16 +434,21 @@
 			files = (
 				6BEF68D024C3AF9C005D6BFB /* ViewPrincipalViewModel.swift in Sources */,
 				6BEF689424C3A413005D6BFB /* Portifolio.xcdatamodeld in Sources */,
+				6B815CFB24CFC0AC00123A5A /* CongratulationsAlertView.swift in Sources */,
 				6BEF688F24C3A413005D6BFB /* AppDelegate.swift in Sources */,
+				6BEF68EA24CA9366005D6BFB /* JogoDaMemoriaScoreModel.swift in Sources */,
+				6BEF68E324C5158F005D6BFB /* JogoDaMemoriaViewModel.swift in Sources */,
 				6BEF68D524C3BC02005D6BFB /* ViewFactorys.swift in Sources */,
 				6BEF68D924C3D69E005D6BFB /* LearnMoreViewController.swift in Sources */,
 				6BEF68C324C3AD89005D6BFB /* Service.swift in Sources */,
 				6BEF689624C3A413005D6BFB /* ViewPrincipalViewController.swift in Sources */,
 				6BEF68D724C3D15A005D6BFB /* OptionsViewTableViewCell.swift in Sources */,
 				6BEF68CD24C3AE7F005D6BFB /* ViewPrincipalAPI.swift in Sources */,
+				6BEF68EC24CBE47D005D6BFB /* ScoreBoardTableViewCell.swift in Sources */,
 				6BEF68D224C3BAA7005D6BFB /* PerfilTableViewCell.swift in Sources */,
 				6BEF689124C3A413005D6BFB /* SceneDelegate.swift in Sources */,
 				6BEF68CB24C3AE0F005D6BFB /* ViewPrincipalModel.swift in Sources */,
+				6BEF68E124C4C093005D6BFB /* JogoDaMemoriaViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +456,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BEF68E824C7B3BB005D6BFB /* JogoDaMemoriaTests.swift in Sources */,
 				6BEF68A924C3A415005D6BFB /* PortifolioTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
