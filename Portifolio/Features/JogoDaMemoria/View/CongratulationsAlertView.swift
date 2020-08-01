@@ -31,12 +31,13 @@ class CongratulationsAlertView: UIViewController {
         return view
     }()
     
-    private lazy var positionScoreImageView: UIImageView = {
-        let view = UIImageView()
+    private lazy var congratulationsLabel: UILabel = {
+        let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFit
-        view.layer.cornerRadius = 12
-        view.layer.masksToBounds = true
+        view.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        view.numberOfLines = 0
+        view.text = "Congratulations!!!"
+        view.textAlignment = .center
         
         return view
     }()
@@ -95,28 +96,6 @@ class CongratulationsAlertView: UIViewController {
         set { self.timeScoreLabel.text = newValue }
     }
     
-    var positionScore: Int? {
-        didSet {
-            guard let position = positionScore else { return }
-            
-            switch PositionScore.init(rawValue: position) {
-            case .first:
-                self.positionScoreImageView.image = UIImage(named: "firstPlace")
-
-            case .second:
-                self.positionScoreImageView.image = UIImage(named: "secondPlace")
-
-            case .third:
-                self.positionScoreImageView.image = UIImage(named: "thirdPlace")
-                
-            default:
-                self.positionScoreLabel.text = "\(position)"
-                self.positionScoreImageView.image = nil
-                break
-            }
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -133,7 +112,7 @@ class CongratulationsAlertView: UIViewController {
         self.view.backgroundColor = .clear
         self.view.addSubview(self.viewBackgroundView)
         self.view.addSubview(self.containerView)
-        self.view.addSubview(self.positionScoreImageView)
+        self.view.addSubview(self.congratulationsLabel)
         self.view.addSubview(self.positionScoreLabel)
         self.view.addSubview(self.timeScoreLabel)
         self.view.addSubview(self.nickNameTextField)
@@ -152,21 +131,21 @@ class CongratulationsAlertView: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            self.positionScoreImageView.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: 20),
-            self.positionScoreImageView.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor),
-            self.positionScoreImageView.heightAnchor.constraint(equalToConstant: 65),
-            self.positionScoreImageView.widthAnchor.constraint(equalToConstant: 65)
+            self.congratulationsLabel.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: 20),
+            self.congratulationsLabel.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor),
+//            self.congratulationsLabel.heightAnchor.constraint(equalToConstant: 65),
+            self.congratulationsLabel.widthAnchor.constraint(equalTo: self.containerView.widthAnchor, multiplier: 0.8)
         ])
         
         NSLayoutConstraint.activate([
-            self.positionScoreLabel.centerYAnchor.constraint(equalTo: self.positionScoreImageView.centerYAnchor),
-            self.positionScoreLabel.centerXAnchor.constraint(equalTo: self.positionScoreImageView.centerXAnchor),
+            self.positionScoreLabel.centerYAnchor.constraint(equalTo: self.congratulationsLabel.centerYAnchor),
+            self.positionScoreLabel.centerXAnchor.constraint(equalTo: self.congratulationsLabel.centerXAnchor),
             self.positionScoreLabel.heightAnchor.constraint(equalToConstant: 65),
             self.positionScoreLabel.widthAnchor.constraint(equalToConstant: 65)
         ])
         
         NSLayoutConstraint.activate([
-            self.timeScoreLabel.topAnchor.constraint(equalTo: self.positionScoreImageView.bottomAnchor, constant: 5),
+            self.timeScoreLabel.topAnchor.constraint(equalTo: self.congratulationsLabel.bottomAnchor, constant: 5),
             self.timeScoreLabel.leftAnchor.constraint(equalTo: self.containerView.leftAnchor, constant: 10),
             self.timeScoreLabel.rightAnchor.constraint(equalTo: self.containerView.rightAnchor, constant: -10),
             self.timeScoreLabel.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor)
@@ -181,7 +160,7 @@ class CongratulationsAlertView: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            self.dismissButton.topAnchor.constraint(equalTo: self.nickNameTextField.bottomAnchor, constant: 5),
+            self.dismissButton.topAnchor.constraint(equalTo: self.nickNameTextField.bottomAnchor, constant: 15),
             self.dismissButton.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: -20),
             self.dismissButton.leftAnchor.constraint(equalTo: self.nickNameTextField.leftAnchor, constant: 15),
             self.dismissButton.rightAnchor.constraint(equalTo: self.nickNameTextField.rightAnchor, constant: -15),

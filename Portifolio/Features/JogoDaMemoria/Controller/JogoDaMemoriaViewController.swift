@@ -131,10 +131,9 @@ class JogoDaMemoriaViewController: UIViewController {
         sender.isSelected = !sender.isSelected
     }
     
-    func showViewCongratulations() {
+    func showViewCongratulations(with score: String?) {
         let alert = CongratulationsAlertView()
-        alert.positionScore = 1
-        alert.timeScore = "00:20"
+        alert.timeScore = score
         alert.uiDelegate = self
         alert.modalPresentationStyle = .custom
         alert.modalTransitionStyle = .crossDissolve
@@ -143,7 +142,7 @@ class JogoDaMemoriaViewController: UIViewController {
     
     func updateScoreContainerView() {
         self.scoreContainerView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
-        for (i, score) in self.viewModel.fetchfirstThreePlacesScore().enumerated() {
+        for (i, (player, score)) in self.viewModel.firstThreePlacesScore().enumerated() {
             
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -155,8 +154,8 @@ class JogoDaMemoriaViewController: UIViewController {
             view.textAlignment = .center
             view.font = UIFont.systemFont(ofSize: 24, weight: .regular)
             view.numberOfLines = 0
-            let scoreTime = "\((score.minute) < 10 ? "0\(score.minute)" : "\(score.minute)"):\(score.second < 10 ? "0\(score.second)" : "\(score.second)")"
-            view.attributedText = NSAttributedString(string: "\(i + 1)° \(score.player ?? "")\n\(scoreTime)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .light)])
+            let scoreTime = score
+            view.attributedText = NSAttributedString(string: "\(i + 1)° \(player)\n\(scoreTime)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .light)])
             
             switch i {
             case 0:
@@ -304,13 +303,13 @@ class JogoDaMemoriaViewController: UIViewController {
             }
         }
         
-        self.viewModel.updateViewCronometer = { [weak self] (minute, second) in
-            self?.cronometroContainer.text = "\(minute < 10 ? "0\(minute)" : "\(minute)"):\(second < 10 ? "0\(second)" : "\(second)")"
+        self.viewModel.updateViewCronometer = { [weak self] (time) in
+            self?.cronometroContainer.text = time
         }
         
-        self.viewModel.playerDidWin = { [weak self] in
+        self.viewModel.playerDidWin = { [weak self] (scoreString) in
             self?.stopTheGameAnimation()
-            self?.showViewCongratulations()
+            self?.showViewCongratulations(with: scoreString)
             (self?.navigationItem.rightBarButtonItem?.customView as? UIButton)?.isSelected = false
         }
     }

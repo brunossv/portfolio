@@ -89,8 +89,8 @@ class JogoDaMemoriaViewModel {
     }
     
     var updateViewCards: ((_ card1: Cards?,_ card2: Cards?) -> Void)?
-    var updateViewCronometer: ((_ minute:Int,_ second: Int) -> Void)?
-    var playerDidWin: (() -> Void)?
+    var updateViewCronometer: ((String) -> Void)?
+    var playerDidWin: ((_ score: String?) -> Void)?
     
     var cardsRightAwnser: [Cards:Bool] = {
         var array: [Cards:Bool] = [:]
@@ -100,6 +100,10 @@ class JogoDaMemoriaViewModel {
         }
         return array
     }()
+    
+    private var scoreFormat: ((_ minute: Int,_ second:Int) -> String) = { (minute, second) in
+        return "\(minute < 10 ? "0\(minute)" : "\(minute)"):\(second < 10 ? "0\(second)" : "\(second)")"
+    }
     
     var cardsClicked: (card1: Cards?, card2: Cards?) = (nil, nil)
     
@@ -136,17 +140,31 @@ class JogoDaMemoriaViewModel {
     func updateTimerCronometer(_ timer: Timer) {
         
         if let fireDate = self.timeCurrent?.initial {
-            let calendar = Calendar.current
-            let components = calendar.dateComponents([.minute, .second], from: fireDate, to: timer.fireDate)
+            let (minute, second) = self.handlerDate(inicial: fireDate, to: timer.fireDate)
             self.timeCurrent?.final = timer.fireDate
-            self.updateViewCronometer?(components.minute ?? 0, components.second ?? 0)
+            
+            self.updateViewCronometer?(self.scoreFormat(minute, second))
         }
+    }
+    
+    private func handlerDate(inicial: Date, to final: Date) -> (Int, Int) {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.minute, .second], from: inicial, to: final)
+        return (components.minute ?? 0, components.second ?? 0)
     }
     
     func checkGameProgress() {
         let numberOfRightAwnser = self.cardsRightAwnser.filter( { $0.value == true})
         if numberOfRightAwnser.count == Cards.allCases.count {
-            self.playerDidWin?()
+            
+            var scoreTimeString: String?
+            if let initialDate = self.timeCurrent?.initial,
+                let finalDate = self.timeCurrent?.final {
+                let (minute, second) = self.handlerDate(inicial: initialDate, to: finalDate)
+                scoreTimeString = self.scoreFormat(minute, second)
+            }
+            
+            self.playerDidWin?(scoreTimeString)
             self.stopTheGame()
         }
     }
@@ -164,14 +182,18 @@ class JogoDaMemoriaViewModel {
     
     func saveNewScoreWithPlayer(name: String) {
         if let initialDate = self.timeCurrent?.initial, let finalDate = self.timeCurrent?.final {
-            let calendar = Calendar.current
-            let components = calendar.dateComponents([.minute, .second], from: initialDate, to: finalDate)
-            self.model.saveNewScore(player: name, dateScore: finalDate, minute: components.minute, second: components.second)
+            let (minute, second) = self.handlerDate(inicial: initialDate, to: finalDate)
+            self.model.saveNewScore(player: name, dateScore: finalDate, minute: minute, second: second)
         }
     }
     
-    func fetchfirstThreePlacesScore() -> [JogoDaMemoriaScore] {
-        return self.model.fetchfirstThreePlacesScore()
+    func firstThreePlacesScore() -> [(String,String)] {
+
+        var scoreArray: [(String,String)] = []
+        for score in self.model.fetchfirstThreePlacesScore() {
+            scoreArray.append((score.player ?? "", self.scoreFormat(Int(score.minute), Int(score.second))))
+        }
+        return scoreArray
     }
     
 }
