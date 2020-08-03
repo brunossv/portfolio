@@ -84,9 +84,8 @@ extension ViewPrincipalViewController: UITableViewDelegate {
                 viewController.title = self.viewModel.model?.features?[indexPath.row].title
                 self.navigationController?.pushViewController(viewController, animated: true)
             case .messages:
-                let blankViewController = UIViewController()
-                blankViewController.view.backgroundColor = .white
-                self.navigationController?.pushViewController(blankViewController, animated: true)
+                let viewController = MessageChatViewController()
+                self.navigationController?.pushViewController(viewController, animated: true)
             case .caller:
                 let blankViewController = UIViewController()
                 blankViewController.view.backgroundColor = .white

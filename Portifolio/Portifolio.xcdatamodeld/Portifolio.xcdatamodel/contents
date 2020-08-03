@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CurrentUser" representedClassName="CurrentUser" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="JogoDaMemoriaScore" representedClassName="JogoDaMemoriaScore" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="minute" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="player" optional="YES" attributeType="String"/>
         <attribute name="second" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
+    <entity name="MessageChat" representedClassName="MessageChat" syncable="YES" codeGenerationType="class">
+        <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="deliveryDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="sendDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserChat" inverseName="messages" inverseEntity="UserChat"/>
+    </entity>
+    <entity name="UserChat" representedClassName="UserChat" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MessageChat" inverseName="user" inverseEntity="MessageChat"/>
+    </entity>
     <elements>
-        <element name="JogoDaMemoriaScore" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="JogoDaMemoriaScore" positionX="-263.734375" positionY="12.31640625" width="128" height="103"/>
+        <element name="MessageChat" positionX="145.3359375" positionY="153.19140625" width="128" height="118"/>
+        <element name="UserChat" positionX="-63" positionY="9" width="128" height="73"/>
+        <element name="CurrentUser" positionX="-45" positionY="135" width="128" height="58"/>
     </elements>
 </model>
