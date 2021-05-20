@@ -45,6 +45,10 @@ class TypeUserMessageView: UIView {
     }
     
     func initViews() {
+        
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.95)
         self.configureSubViews()
     }
     
@@ -53,10 +57,10 @@ class TypeUserMessageView: UIView {
         self.addSubview(self.sendButton)
         
         NSLayoutConstraint.activate([
-            self.textView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+            self.textView.topAnchor.constraint(equalTo: self.topAnchor, constant: 7),
             self.textView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
             self.textView.rightAnchor.constraint(equalTo: self.sendButton.leftAnchor, constant: -10),
-            self.textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+            self.textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -7),
             self.textView.heightAnchor.constraint(equalToConstant: 30)
         ])
         
@@ -66,6 +70,17 @@ class TypeUserMessageView: UIView {
             self.sendButton.widthAnchor.constraint(equalToConstant: 30),
             self.sendButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10)
         ])
+        
+        self.sendButton.addTarget(self, action: #selector(self.didSendMessage(_:)), for: .touchUpInside)
+    }
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if #available(iOS 11.0, *) {
+            if let window = window {
+                bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1.0).isActive = true
+            }
+        }
     }
     
     @objc

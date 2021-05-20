@@ -18,7 +18,7 @@ class MessageChatTableViewCell: UITableViewCell {
     private lazy var messageContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 24
+        view.layer.cornerRadius = 18
         view.layer.masksToBounds = true
         
         return view
@@ -28,6 +28,7 @@ class MessageChatTableViewCell: UITableViewCell {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.numberOfLines = 0
+        view.textAlignment = .center
         
         return view
     }()
@@ -78,18 +79,20 @@ class MessageChatTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             self.messageContainer.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
             self.messageContainer.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
-            self.messageContainer.widthAnchor.constraint(lessThanOrEqualTo: self.contentView.widthAnchor, multiplier: 0.70)
+            self.messageContainer.widthAnchor.constraint(lessThanOrEqualTo: self.contentView.widthAnchor, multiplier: 0.75),
         ])
         
         self.leftBubbleConstraint = self.messageContainer.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10)
         self.rightBubbleConstraint = self.messageContainer.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -10)
         
-        let padding: CGFloat = 14
+        let paddingH: CGFloat = 8
+        let paddingW: CGFloat = 10
         NSLayoutConstraint.activate([
-            self.messageLabel.topAnchor.constraint(equalTo: self.messageContainer.topAnchor, constant: padding),
-            self.messageLabel.leftAnchor.constraint(equalTo: self.messageContainer.leftAnchor, constant: padding),
-            self.messageLabel.rightAnchor.constraint(equalTo: self.messageContainer.rightAnchor, constant: -padding),
-            self.messageLabel.bottomAnchor.constraint(equalTo: self.messageContainer.bottomAnchor, constant: -padding)
+            self.messageLabel.topAnchor.constraint(equalTo: self.messageContainer.topAnchor, constant: paddingH),
+            self.messageLabel.leftAnchor.constraint(equalTo: self.messageContainer.leftAnchor, constant: paddingW),
+            self.messageLabel.rightAnchor.constraint(equalTo: self.messageContainer.rightAnchor, constant: -paddingW),
+            self.messageLabel.bottomAnchor.constraint(equalTo: self.messageContainer.bottomAnchor, constant: -paddingH),
+            self.messageLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ])
     }
     

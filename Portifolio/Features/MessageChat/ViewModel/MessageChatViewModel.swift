@@ -9,18 +9,17 @@
 import Foundation
 
 class MessageChatViewModel {
-    private let model: MessageChatModel = MessageChatModel()
+    let model: MessageChatModel = MessageChatModel()
+    var chatUser: UserChat?
+    var messages: [[MessageChat]]? = []
     
-    
-    
-    var messages: [[MessageChat]]?
-    
-    func downloadAndSaveNewMessages() {
+    func downloadNewsMessages(_ completion: @escaping () -> Void) {
         
         let groupMessages: (([MessageChat]) -> [[MessageChat]]) = { (messages) in
             
             var array: [[MessageChat]] = [[]]
-            let groupedMessages = Dictionary(grouping: messages) { (element) -> Date in
+            let arraySorted = messages.sorted(by: { $0.createdDate ?? Date() < $1.createdDate ?? Date() })
+            let groupedMessages = Dictionary(grouping: arraySorted) { (element) -> Date in
                 let date = DateFormatter()
                 date.dateFormat = "yyyy-MM-dd"
                 if let sendDate = element.sendDate {
@@ -31,9 +30,10 @@ class MessageChatViewModel {
                     return date.date(from: date.string(from: Date())) ?? Date()
                 }
             }
-            //provide a sorting for your keys somehow
-            let sortedKeys = groupedMessages.keys.reversed()
+            
+            let sortedKeys = groupedMessages.keys.sorted(by: { $0 < $1 })
             sortedKeys.forEach { (key) in
+                print(key)
                 let values = groupedMessages[key]
                 array.append(values ?? [])
             }
@@ -41,18 +41,30 @@ class MessageChatViewModel {
             return array
         }
         
-        self.messages = groupMessages(self.model.searchAllMessages() ?? [])
+        self.messages = groupMessages(self.model.getAllMessages(from:  self.chatUser?.id ?? 0, and: self.model.currentUser?.id ?? 0) ?? [])
+        completion()
     }
     
     func sendNewMessage( message: String?, _ completion: @escaping () -> Void) {
-        self.model.saveNewMessages()
-    }
-    
-    func saveCurrentUser(_ name: String?) {
-        self.model.saveCurrentUser(name)
-    }
-    
-    var currentUser: CurrentUser? {
-        return self.model.currentUser()
+        guard let messages = self.messages else { return }
+        let lastIndex = messages.count - 1
+        if let newMessage = message,
+           let idUser = self.chatUser?.id,
+           let fromName = self.model.currentUser?.name,
+           let fromId = self.model.currentUser?.id,
+           lastIndex < messages.count {
+            
+            let parameters: [String:Any] = [
+                "to_id":idUser,
+                "from_id":fromId,
+                "from_name":fromName,
+                "text":newMessage
+            ]
+            
+            MessageSingleton.shared.emit(parametro: parameters) { [weak self] in
+                guard let messageModel = self?.model.saveSendedMessage(newMessage, to: Int(idUser), sendDate: Date()) else { return }
+                completion()
+            }
+        }
     }
 }
