@@ -56,8 +56,9 @@ class MessageChatViewController: UIViewController {
         self.getMessages()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView.reloadData()
         MessageSingleton.shared.didReceiveMessage = { [weak self] in
             self?.tableView.reloadData()
         }
@@ -67,11 +68,11 @@ class MessageChatViewController: UIViewController {
         self.viewModel.downloadNewsMessages { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
-            self.scrollToBottom(aanimate: false, delay: 0)
+            self.scrollToBottom(animate: false, delay: 0)
         }
     }
     
-    func scrollToBottom(aanimate: Bool = true, delay: TimeInterval = 0.25) {
+    func scrollToBottom(animate: Bool = true, delay: TimeInterval = 0.25) {
         let lastSection = self.tableView.numberOfSections - 1
         let lastRow = self.tableView.numberOfRows(inSection: lastSection) - 1
         

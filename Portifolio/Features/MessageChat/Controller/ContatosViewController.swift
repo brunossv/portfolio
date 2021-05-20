@@ -99,8 +99,9 @@ class ContatosViewController: UIViewController {
         callRequests(requests: [.getUser, .getChatUsers])
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView.reloadData()
         MessageSingleton.shared.didReceiveMessage = { [weak self] in
             self?.tableView.reloadData()
         }
