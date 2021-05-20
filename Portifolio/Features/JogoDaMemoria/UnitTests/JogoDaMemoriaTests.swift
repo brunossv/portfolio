@@ -42,14 +42,14 @@ class JogoDaMemoriaTests: XCTestCase {
         
         viewModel.selectACard(.chicken)
         
-        //Quando selecionar a segunda carta, esta clousure é chamada, informando que as cartas selecionadas, devem esconder a figura reprentativa.
+        //Quando selecionar a segunda carta, esta clousure é chamada, informando que as cartas selecionadas, devem esconder a figura representativa.
         viewModel.updateViewCards = { (card1, card2) in
             XCTAssertEqual(card1, .bear)
             XCTAssertEqual(card2, .chicken)
         }
 
+        //Verifica se existem cards marcados como true, quando o usuário errar
         let cardsTrue = viewModel.cardsRightAwnser.filter( { $0.value == true })
-        
         XCTAssertEqual(cardsTrue.count, 0)
         
         XCTAssertEqual(viewModel.cardsClicked.card1, nil)
@@ -75,8 +75,8 @@ class JogoDaMemoriaTests: XCTestCase {
         viewModel.selectACard(.frog)
         viewModel.selectACard(.equalFrog)
         
+        //Caso o número de acertos sejam iguais ao número de cards, o usuário marcou corretamente todos os cards.
         let cardsTrue = viewModel.cardsRightAwnser.filter( { $0.value == true })
-        
         XCTAssertEqual(cardsTrue.count, JogoDaMemoriaViewModel.Cards.allCases.count)
     }
 
