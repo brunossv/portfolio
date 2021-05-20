@@ -20,8 +20,8 @@ struct EmptyResponse: Decodable {
 
 class MessageChatAPI {
     struct Resources {
-        private static var url: String { return "http://localhost:5000" }
-//        private static var url: String { return "https://arctec.herokuapp.com" }
+//        private static var url: String { return "http://localhost:5000" }
+        private static var url: String { return "https://arctec.herokuapp.com" }
         
         static var createUser: String { return Resources.url + "/newUser"}
         static var getAllUsers: String { return Resources.url + "/getAllUsers"}

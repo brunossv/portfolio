@@ -11,8 +11,8 @@ import SocketIO
 class MessageSingleton {
     
     struct Resources {
-                private static var url: String { return "http://localhost:5000" }
-//                private static var url: String { return "https://arctec.herokuapp.com/" }
+//                private static var url: String { return "http://localhost:5000" }
+                private static var url: String { return "https://arctec.herokuapp.com/" }
         
         static var socket: String { get { return Resources.url } }
     }
