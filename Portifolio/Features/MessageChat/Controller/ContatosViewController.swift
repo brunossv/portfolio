@@ -169,7 +169,7 @@ extension ContatosViewController: UITableViewDataSource {
         cell?.nick = self.viewModel.contatos?[indexPath.row].name
         cell?.preview = message?.text
         cell?.time = self.viewModel.formatarMensagemData(msgData: message?.createdDate)
-        
+        cell?.countDontRead = self.viewModel.countMessagesDidntRead(index: indexPath.row)
         return cell ?? UITableViewCell()
     }
 }

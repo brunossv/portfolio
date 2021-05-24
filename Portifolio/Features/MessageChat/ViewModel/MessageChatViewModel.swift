@@ -62,9 +62,17 @@ class MessageChatViewModel {
             ]
             
             MessageSingleton.shared.emit(parametro: parameters) { [weak self] in
-                guard let messageModel = self?.model.saveSendedMessage(newMessage, to: Int(idUser), sendDate: Date()) else { return }
+                guard let _ = self?.model.saveSendedMessage(newMessage, to: Int(idUser), sendDate: Date()) else { return }
                 completion()
             }
         }
+    }
+    
+    func markAllReaded() {
+        if let currentUser = self.model.currentUser?.id, let idContato = self.chatUser?.id {
+            self.model.markReadMessagesDidntReaded(from: idContato, and: currentUser)
+        }
+        
+        return
     }
 }

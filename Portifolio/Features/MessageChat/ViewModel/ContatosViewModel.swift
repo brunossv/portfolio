@@ -53,6 +53,16 @@ class ContatosViewModel {
         return nil
     }
     
+    func countMessagesDidntRead(index: Int) -> Int? {
+        if let contatos = contatos, index < contatos.count {
+            let idContato = contatos[index].id
+            
+            return self.model.countMessagesDidntRead(from: idContato, and: self.currentUser?.id ?? 0)
+        }
+        
+        return nil
+    }
+
     func formatarMensagemData(msgData: Date?) -> String? {
         guard let data = msgData else {
             return nil

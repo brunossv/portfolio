@@ -54,6 +54,26 @@ class ContatosTableViewCell: UITableViewCell {
         return view
     }()
     
+    lazy var dontReadContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = view.tintColor
+        view.layer.cornerRadius = 9
+        view.layer.masksToBounds = true
+        
+        return view
+    }()
+    
+    lazy var dontReadLabel: UILabel = {
+        let view = UILabel()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = .white
+        view.textAlignment = .center
+        view.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        
+        return view
+    }()
+    
     var nick: String? {
         get { self.nickNameLabel.text }
         set { self.nickNameLabel.text = newValue }
@@ -67,6 +87,17 @@ class ContatosTableViewCell: UITableViewCell {
     var time: String? {
         get { self.lastMessageTimeLabel.text }
         set { self.lastMessageTimeLabel.text = newValue }
+    }
+    
+    var countDontRead: Int? {
+        didSet {
+            if let count = self.countDontRead, count > 0 {
+                self.dontReadContainerView.isHidden = false
+                self.dontReadLabel.text = "\(count)"
+            } else {
+                self.dontReadContainerView.isHidden = true
+            }
+        }
     }
     
     var avatar: String? {
@@ -90,9 +121,10 @@ class ContatosTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.nickNameLabel)
         self.contentView.addSubview(self.lastMessageTimeLabel)
         self.contentView.addSubview(self.previewMessageLabel)
+        self.contentView.addSubview(self.dontReadContainerView)
+        self.dontReadContainerView.addSubview(self.dontReadLabel)
         
         NSLayoutConstraint.activate([
-//            self.avatarImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             self.avatarImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
             self.avatarImageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -15),
             self.avatarImageView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 10),
@@ -109,15 +141,27 @@ class ContatosTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             self.lastMessageTimeLabel.topAnchor.constraint(equalTo: self.avatarImageView.topAnchor),
             self.lastMessageTimeLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -15),
-//            self.lastMessageTimeLabel.widthAnchor.constraint(equalToConstant: 100)
         ])
         
         
         NSLayoutConstraint.activate([
             self.previewMessageLabel.topAnchor.constraint(equalTo: self.nickNameLabel.bottomAnchor),
             self.previewMessageLabel.leftAnchor.constraint(equalTo: self.avatarImageView.rightAnchor, constant: 12),
-            self.previewMessageLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -12),
-//            self.previewMessageLabel.bottomAnchor.constraint(greaterThanOrEqualTo: self.contentView.bottomAnchor, constant: -15)
+            self.previewMessageLabel.rightAnchor.constraint(equalTo: self.dontReadLabel.leftAnchor, constant: -15),
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.dontReadContainerView.topAnchor.constraint(equalTo: self.dontReadLabel.topAnchor),
+            self.dontReadContainerView.rightAnchor.constraint(equalTo: self.dontReadLabel.rightAnchor),
+            self.dontReadContainerView.leftAnchor.constraint(equalTo: self.dontReadLabel.leftAnchor),
+            self.dontReadContainerView.bottomAnchor.constraint(equalTo: self.dontReadLabel.bottomAnchor),
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.dontReadLabel.topAnchor.constraint(equalTo: self.lastMessageTimeLabel.bottomAnchor, constant: 5),
+            self.dontReadLabel.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -15),
+            self.dontReadLabel.widthAnchor.constraint(equalToConstant: 18),
+            self.dontReadLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
     }
     

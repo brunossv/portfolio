@@ -54,13 +54,15 @@ class MessageChatViewController: UIViewController {
                                                object: nil)
         
         self.getMessages()
+        self.viewModel.markAllReaded()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView.reloadData()
         MessageSingleton.shared.didReceiveMessage = { [weak self] in
-            self?.tableView.reloadData()
+            self?.getMessages()
+            self?.viewModel.markAllReaded()
         }
     }
     

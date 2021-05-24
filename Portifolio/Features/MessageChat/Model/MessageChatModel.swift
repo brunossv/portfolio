@@ -54,6 +54,8 @@ struct MessageChatModel {
         message.text = text
         message.createdDate = date
         message.deliveryDate = date
+        message.read = false
+        
         if let userFrom = self.searchUser(by: id), let currentUser = self.currentUser {
             currentUser.addToReceived(message)
             userFrom.addToSend(message)
@@ -115,6 +117,29 @@ struct MessageChatModel {
             return message
         }
         return nil
+    }
+    
+    func markReadMessagesDidntReaded(from fromId: Int16, and currentUserId: Int16) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MessageChat")
+        fetchRequest.predicate = NSPredicate(format: "self.read == false AND self.to.id == \(fromId) AND self.from.id == \(currentUserId)")
+        
+        if let messages = try? self.context.fetch(fetchRequest) as? [MessageChat] {
+            for message in messages {
+                message.read = true
+            }
+            try? self.context.save()
+        }
+        return
+    }
+    
+    func countMessagesDidntRead(from fromId: Int16, and currentUserId: Int16) -> Int {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MessageChat")
+        fetchRequest.predicate = NSPredicate(format: "self.read == false AND self.to.id == \(fromId) AND self.from.id == \(currentUserId)")
+        
+        if let messages = try? self.context.fetch(fetchRequest) as? [MessageChat] {
+            return messages.count
+        }
+        return 0
     }
     
     @discardableResult
