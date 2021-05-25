@@ -70,19 +70,18 @@ class MessageChatViewController: UIViewController {
         self.viewModel.downloadNewsMessages { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
-            self.scrollToBottom(animate: false, delay: 0)
+            self.scrollToBottom(animate: false)
         }
     }
     
-    func scrollToBottom(animate: Bool = true, delay: TimeInterval = 0.25) {
-        let lastSection = self.tableView.numberOfSections - 1
-        let lastRow = self.tableView.numberOfRows(inSection: lastSection) - 1
-        
-        if lastSection > 0 && lastRow > 0 {
+    func scrollToBottom(animate: Bool = true) {
+        let numberOfSections = self.tableView.numberOfSections
+        let numberOfRows = self.tableView.numberOfRows(inSection: numberOfSections)
+        if numberOfSections > 0 && numberOfRows > 0 {
+            let lastSection = numberOfSections - 1
+            let lastRow = numberOfRows - 1
             let indexPath = IndexPath(row: lastRow, section: lastSection)
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                self.tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
-            }
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
     
