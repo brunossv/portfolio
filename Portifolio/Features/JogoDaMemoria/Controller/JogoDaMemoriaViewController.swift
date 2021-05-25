@@ -217,7 +217,7 @@ class JogoDaMemoriaViewController: UIViewController {
             } else if i == cards.count - 1 {
                 NSLayoutConstraint.activate([
                     cardView.topAnchor.constraint(equalTo: lastView.topAnchor),
-                    cardView.leftAnchor.constraint(equalTo: lastView.rightAnchor, constant: offSetPadding),
+                    cardView.leftAnchor.constraint(greaterThanOrEqualTo: lastView.rightAnchor, constant: offSetPadding),
                     cardView.rightAnchor.constraint(equalTo: self.jogoContainer.rightAnchor, constant: -offSetPadding),
                     cardView.bottomAnchor.constraint(equalTo: self.jogoContainer.bottomAnchor, constant: -offSetPadding)
                 ])

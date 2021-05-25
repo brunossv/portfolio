@@ -19,12 +19,20 @@ class Services {
     func request<I: Decodable>(_ urlstring: String, method: HTTPmethod = .get, parameters: [String:Any] = [:], headers: [String:String] = [:], completion: @escaping (_ success: I?,_ error: String?) ->()) {
         
         guard let urlQuery = urlstring.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let url = URL(string: urlQuery) else {
+            var urlComponente = URLComponents(string: urlQuery) else {
             completion(nil, "Erro inesperado")
             return
         }
-        debugPrint(urlQuery)
         
+        if method == .get {
+            for param in parameters {
+                urlComponente.queryItems = []
+                urlComponente.queryItems?.append(URLQueryItem(name: param.key, value: "\(param.value)"))
+            }
+        }
+        
+        guard let url = urlComponente.url else { return }
+        debugPrint(url.absoluteString)
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         
@@ -34,15 +42,18 @@ class Services {
             
         }
         
-        if parameters.count > 0 {
+        if parameters.count > 0 && method != .get {
             let jsonSerialization = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
             request.httpBody = jsonSerialization
+            
             debugPrint("Parametros: ",parameters)
         }
         
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             if let msgError = error {
-                completion(nil, msgError.localizedDescription)
+                DispatchQueue.main.async {
+                    completion(nil, msgError.localizedDescription)
+                }
                 return
             }
             
@@ -60,7 +71,9 @@ class Services {
                     }
                 }
             } else {
-                completion(nil, "Erro inesperado")
+                DispatchQueue.main.async {
+                    completion(nil, "Erro inesperado")
+                }
             }
         }
 
@@ -105,7 +118,9 @@ class Services {
                     completion(debugJson, nil)
                 }
             } else {
-                completion(nil, "Erro inesperado")
+                DispatchQueue.main.async {
+                    completion(nil, "Erro inesperado")
+                }
             }
         }
 
