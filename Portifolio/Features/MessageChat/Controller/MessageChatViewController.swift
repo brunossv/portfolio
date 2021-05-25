@@ -76,10 +76,10 @@ class MessageChatViewController: UIViewController {
     
     func scrollToBottom(animate: Bool = true) {
         let numberOfSections = self.tableView.numberOfSections
-        let numberOfRows = self.tableView.numberOfRows(inSection: numberOfSections)
+        let lastSection = numberOfSections - 1
+        let numberOfRows = self.tableView.numberOfRows(inSection: lastSection)
+        let lastRow = numberOfRows - 1
         if numberOfSections > 0 && numberOfRows > 0 {
-            let lastSection = numberOfSections - 1
-            let lastRow = numberOfRows - 1
             let indexPath = IndexPath(row: lastRow, section: lastSection)
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
@@ -134,13 +134,9 @@ class MessageChatViewController: UIViewController {
         self.tableView.separatorStyle = .none
         self.tableView.allowsSelection = false
         self.tableView.keyboardDismissMode = .interactive
-//        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 44, right: 0)
-//        self.tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 44, right: 0)
+        self.tableView.contentInset = .zero
+        self.tableView.scrollIndicatorInsets = .zero
     }
-    
-//    override var inputAccessoryView: UIView? {
-//        return self.textView
-//    }
     
     // MARK: - Notifications
     
